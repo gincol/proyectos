@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://webservices.neru.net.bcn.es/inventari/comerc/to">
-	<xs:include schemaLocation="inventari/operations/comerc/createComerc.xsd" />
-	<xs:include schemaLocation="inventari/operations/comerc/readComerc.xsd" />
-	<xs:include schemaLocation="inventari/operations/comerc/updateComerc.xsd" />
-	<xs:include schemaLocation="inventari/operations/comerc/deleteComerc.xsd" />
-</xs:schema>

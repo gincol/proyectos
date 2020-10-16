@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://webservices.neru.net.bcn.es/inventari/instalacio/to">
-	<xs:include schemaLocation="inventari/operations/instalacio/createInstalacio.xsd" />
-	<xs:include schemaLocation="inventari/operations/instalacio/readInstalacio.xsd" />
-	<xs:include schemaLocation="inventari/operations/instalacio/updateInstalacio.xsd" />
-	<xs:include schemaLocation="inventari/operations/instalacio/deleteInstalacio.xsd" />
-</xs:schema>

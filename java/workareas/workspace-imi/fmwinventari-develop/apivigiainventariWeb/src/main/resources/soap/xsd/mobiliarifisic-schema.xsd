@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://webservices.neru.net.bcn.es/inventari/mobiliarifisic/to">
-	<xs:include schemaLocation="inventari/operations/mobiliarifisic/createMobiliariFisic.xsd" />
-	<xs:include schemaLocation="inventari/operations/mobiliarifisic/readMobiliariFisic.xsd" />
-	<xs:include schemaLocation="inventari/operations/mobiliarifisic/updateMobiliariFisic.xsd" />
-	<xs:include schemaLocation="inventari/operations/mobiliarifisic/deleteMobiliariFisic.xsd" />
-</xs:schema>
