@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.gap.inventary.orm.dao.LogicalModelGapDao">
+   
+    <select id="getLogicalModelsGap" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.LogicalModelGap">
+        SELECT 
+	      	CODI AS code, 
+	      	ESTAT_CODI AS statusCode,
+	      	ESTAT_DESCRIPCIO AS statusDescription,
+	      	TIPUS_CODI AS typeCode,
+	      	TIPUS_DESCRIPCIO AS typeDescription,
+	      	FRACCIO_CODI AS fractionTypeCode,
+	      	FRACCIO_DESCRIPCIO AS fractionTypeDescription,
+	      	MOBFISIC_CODI AS mcfCode,
+			CONTRACTISTA_CODI AS contractCode 
+		FROM 
+			VW_MOBILIARI_LOGIC
+		WHERE 
+			CODI = #{code}			
+			AND DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI  <![CDATA[>=]]> SYSDATE OR DATA_FI IS NULL)
+		<if test="checkStatusDelete != null">
+			AND ESTAT_CODI !='B'
+		</if>
+    </select>
+    
+     <select id="getLogicalModelsUbicationGap" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.LogicalModelGap">
+        SELECT
+        	CODI AS code, 
+	      	ESTAT_CODI AS statusCode,
+	      	ESTAT_DESCRIPCIO AS statusDescription,
+	      	TIPUS_CODI AS typeCode,
+	      	TIPUS_DESCRIPCIO AS typeDescription,
+	      	FRACCIO_CODI AS fractionTypeCode,
+	      	FRACCIO_DESCRIPCIO AS fractionTypeDescription,
+	      	MOBFISIC_CODI AS mcfCode,
+			CONTRACTISTA_CODI AS contractCode,
+			UBICACIO_CODI AS ubicationCode, 
+			TIPUS_UBICACIO_CODI AS ubicationTypeCode,
+			TIPUS_UBICACIO_DESCRIPCIO AS ubicationTypeDescription,
+			POSICIO as position,
+			POSICIO_X as coordinateX,
+			POSICIO_Y as coordinateY,
+			CODI_USUARI AS userCode,
+			DATA_INICI AS startDate,
+			DATA_FI AS endDate
+			
+		FROM 
+			VW_MOBILIARI_LOGIC
+		WHERE 
+			UBICACIO_CODI = #{codeUbication}
+			AND DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI  <![CDATA[>=]]> SYSDATE OR DATA_FI IS NULL)
+			AND ESTAT_CODI != 'B'			
+    </select>
+    
+    <select id="getLogicalModelsPositionUbicationGap" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.LogicalModelGap">
+        SELECT
+        	CODI AS code, 
+	      	ESTAT_CODI AS statusCode,
+	      	ESTAT_DESCRIPCIO AS statusDescription,
+	      	TIPUS_CODI AS typeCode,
+	      	TIPUS_DESCRIPCIO AS typeDescription,
+	      	FRACCIO_CODI AS fractionTypeCode,
+	      	FRACCIO_DESCRIPCIO AS fractionTypeDescription,
+	      	MOBFISIC_CODI AS mcfCode,
+			CONTRACTISTA_CODI AS contractCode,
+			UBICACIO_CODI AS ubicationCode, 
+			TIPUS_UBICACIO_CODI AS ubicationTypeCode,
+			TIPUS_UBICACIO_DESCRIPCIO AS ubicationTypeDescription,
+			POSICIO as position,
+			POSICIO_X as coordinateX,
+			POSICIO_Y as coordinateY,
+			CODI_USUARI AS userCode,
+			DATA_INICI AS startDate,
+			DATA_FI AS endDate
+		FROM 
+			VW_MOBILIARI_LOGIC
+		WHERE 
+			UBICACIO_CODI = #{param1}
+			AND POSICIO = #{param2}
+			AND CODI != #{param3}
+			AND DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI  <![CDATA[>=]]> SYSDATE OR DATA_FI IS NULL)
+			AND ESTAT_CODI != 'B'			
+    </select>
+    
+    <select id="getVacantLogicalModelsGap" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.LogicalModelGap">
+        SELECT 
+	      	CODI AS code, 
+	      	ESTAT_CODI AS statusCode,
+	      	ESTAT_DESCRIPCIO AS statusDescription,
+	      	TIPUS_CODI AS typeCode,
+	      	TIPUS_DESCRIPCIO AS typeDescription,
+	      	FRACCIO_CODI AS fractionTypeCode,
+	      	FRACCIO_DESCRIPCIO AS fractionTypeDescription,
+	      	MOBFISIC_CODI AS mcfCode,
+			CONTRACTISTA_CODI AS contractCode,
+			UBICACIO_CODI AS ubicationCode, 
+			TIPUS_UBICACIO_CODI AS ubicationTypeCode,
+			TIPUS_UBICACIO_DESCRIPCIO AS ubicationTypeDescription,
+			POSICIO as position,
+			POSICIO_X as coordinateX,
+			POSICIO_Y as coordinateY,
+			DATA_INICI AS startDate,
+			DATA_FI AS endDate,
+			CODI_USUARI AS userCode
+		FROM 
+			VW_MOBILIARI_LOGIC
+		WHERE 
+			CODI = #{codeMCL}	
+		AND 
+			(MOBFISIC_CODI IS NULL OR MOBFISIC_CODI = #{codeMCF})	
+		AND 
+			DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI  <![CDATA[>=]]> SYSDATE OR DATA_FI IS NULL)
+		AND ESTAT_CODI != 'B'	
+    </select>
+</mapper>

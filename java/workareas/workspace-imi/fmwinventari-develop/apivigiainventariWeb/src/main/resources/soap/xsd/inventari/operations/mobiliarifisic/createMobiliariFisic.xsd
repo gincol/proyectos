@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:basic="http://webservices.neru.net.bcn.es/basic/to"
+	xmlns:mobiliariFisic="http://webservices.neru.net.bcn.es/inventari/mobiliarifisic/to" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/mobiliarifisic/to">
+	<xs:import namespace="http://webservices.neru.net.bcn.es/basic/to" schemaLocation="../../../basic/Basic.xsd" />
+	<xs:include schemaLocation="../../MobiliariFisic.xsd" />
+	<xs:element name="createMobiliariFisicRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicRequestTO">
+					<xs:sequence>
+						<xs:element name="createMobiliariFisicParameters" type="mobiliariFisic:CreateMobiliariFisicParametersTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="createMobiliariFisicResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicResponseTO">
+					<xs:sequence>
+						<xs:element name="createMobiliariFisicResults" type="mobiliariFisic:CreateMobiliariFisicResultsTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CreateMobiliariFisicParametersTO">
+		<xs:sequence>
+			<xs:element name="mobiliariFisic" type="mobiliariFisic:MobiliariFisicTO" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateMobiliariFisicResultsTO">
+		<xs:complexContent>
+			<xs:extension base="basic:BasicResultTO" />
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

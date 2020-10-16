@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owasp-app-deployment
+  namespace: arq
+  labels:
+    k8s-app: owasp-app
+    app: owasp-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: owasp-app
+        app: owasp-app
+    spec:
+      containers:
+      - name: owasp-app
+        image: registry.debian.local:5000/ci-app
+        imagePullPolicy: "Always"
+        envFrom:
+        - configMapRef:
+            name: owasp-cm-app
+        - secretRef:
+            name: owasp-secret
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          periodSeconds: 10
+          initialDelaySeconds: 30
+          timeoutSeconds: 5  
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          periodSeconds: 10
+          initialDelaySeconds: 40
+          timeoutSeconds: 5
+            

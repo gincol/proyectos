@@ -1,0 +1,12 @@
+1602488617996	Move 'docker' to 'cloud'
+1602489286524	Move 'secret.yaml' to 'db'
+1602489293118	Move 'configmap.yaml' to 'app'
+1602489300318	Move 'volume.yaml' to 'db'
+1602489418096	Move 'secret.yaml' to 'k8s'
+1602490691748	Copy file
+1602490741737	Move 2 resources to 'config'
+1602494052320	Delete element
+1602495571136	Delete element
+1602495689054	Copy file
+1602498143659	Copy file
+1602499929528	Delete element

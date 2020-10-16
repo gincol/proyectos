@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+	xmlns:basic="http://webservices.neru.net.bcn.es/basic/to"
+	xmlns:itinerari="http://webservices.neru.net.bcn.es/itinerari/itinerari/to"
+	xmlns:mobiliariFisic="http://webservices.neru.net.bcn.es/inventari/mobiliarifisic/to"
+	xmlns:mobiliariLogic="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic/to"
+	xmlns:ubicacio="http://webservices.neru.net.bcn.es/inventari/ubicacio/to"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic/to">
+	<xs:import namespace="http://webservices.neru.net.bcn.es/basic/to" schemaLocation="../../../basic/Basic.xsd" />
+	<xs:import namespace="http://webservices.neru.net.bcn.es/itinerari/itinerari/to" schemaLocation="../../../itinerari/Itinerari.xsd" />
+	<xs:import namespace="http://webservices.neru.net.bcn.es/inventari/mobiliarifisic/to" schemaLocation="../../MobiliariFisic.xsd" />
+	<xs:import namespace="http://webservices.neru.net.bcn.es/inventari/ubicacio/to" schemaLocation="../../Ubicacio.xsd" />
+	<xs:include schemaLocation="../../MobiliariLogic.xsd" />
+	<xs:element name="readMobiliariLogicRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicRequestTO">
+					<xs:sequence>
+						<xs:element name="readMobiliariLogicParameters" type="mobiliariLogic:ReadMobiliariLogicParametersTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="readMobiliariLogicResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicResponseTO">
+					<xs:sequence>
+						<xs:element name="readMobiliariLogicResults" type="mobiliariLogic:ReadMobiliariLogicResultsTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ReadMobiliariLogicParametersTO">
+		<xs:sequence>
+			<xs:element name="codi" type="xs:string" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReadMobiliariLogicResultsTO">
+		<xs:complexContent>
+			<xs:extension base="basic:BasicResultTO">
+				<xs:sequence>
+					<xs:element name="mobiliariLogic" type="mobiliariLogic:MobiliariLogicTO" minOccurs="0" maxOccurs="1" />
+					<xs:element name="itinerariNoVigent" type="itinerari:ItinerariCodiTO" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+					<xs:element name="itinerariVigent" type="itinerari:ItinerariCodiTO" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+					<xs:element name="logicUbicacio" type="mobiliariLogic:LogicUbicacioTO" nillable="true" minOccurs="0" maxOccurs="unbounded"  />
+					<xs:element name="mobiliariFisic" type="mobiliariFisic:MobiliariFisicTO" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

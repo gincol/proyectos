@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: owasp-secret-db
+  namespace: arq
+data:
+  postgres_user: cG9zdGdyZXM=
+  postgres_password: cG9zdGdyZXM=
+  postgres_db: b3dhc3A=

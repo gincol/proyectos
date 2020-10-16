@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.gap.inventary.orm.dao.TypeSubtypeExpenseGapDao">
+
+   
+    <select id="getTypeSubtypesExpenseGap" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.TypeSubtypeExpenseGap">
+        SELECT 
+	        CODI AS typeCode, 
+			DESCRIPCIO AS typeDescription,
+			SUBTIPUS_CODI AS subtypeCode, 
+			SUBTIPUS_DESCRIPCIO AS subtypeDescription
+		FROM 
+			VW_DM_TIPUS_DESPESA
+		WHERE 
+			CODI = #{codeType}
+				
+    </select>
+    
+</mapper>

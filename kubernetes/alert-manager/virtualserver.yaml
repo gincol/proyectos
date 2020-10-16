@@ -1,0 +1,15 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: alertmanager
+  namespace: monitoring
+spec:
+  host: alertmanager.debian.local
+  upstreams:
+  - name: alertmanager
+    service: alertmanager-service
+    port: 80
+  routes:
+  - path: /
+    action:
+      pass: alertmanager

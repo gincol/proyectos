@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	elementFormDefault="qualified" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:localitzacio="http://webservices.neru.net.bcn.es/common/to" 
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/comerc/to">
+	<xs:import namespace="http://webservices.neru.net.bcn.es/common/to" schemaLocation="../common/Localitzacio.xsd" />
+	<xs:complexType name="ComercTO">
+		<xs:sequence>
+			<xs:element name="cif" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="codi" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="codiContractista" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="codiEstatComerc" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="codiExpedient" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="coordinadaX" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+			<xs:element name="coordinadaY" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+			<xs:element name="dataAlta" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="dataBaixa" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataFi" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataInici" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="granProductor" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="raoSocial" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="zonaComercial" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+			<xs:element name="localitzacio" type="localitzacio:LocalitzacioTO" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

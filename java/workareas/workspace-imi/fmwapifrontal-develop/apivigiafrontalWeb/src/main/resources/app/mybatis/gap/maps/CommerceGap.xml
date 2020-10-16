@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.gap.inventary.orm.dao.CommerceGapDao">
+   
+    <select id="getCommercesGap" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.CommerceGap">
+        SELECT 
+	      	CODI AS code,
+	      	CIF AS cif,
+			COORDINADA_X AS coordinateX,
+			COORDINADA_Y AS coordinateY,
+			DATA_INICI AS dateStart,
+			DATA_FI AS dateEnd,
+			RAO_SOCIAL AS socialReason,
+			ESTAT_CODI AS status,
+			GRAN_PRODUCTOR AS greatProductor,
+			EXPEDIENT AS expedient,
+			ZONA_COMERCIAL	AS belongCommercialArea
+		FROM 
+			VW_COMERC
+		WHERE 
+			CODI = #{code}
+		AND
+			DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI  <![CDATA[>=]]> SYSDATE OR DATA_FI IS NULL)
+		<if test="checkStatusDelete != null">
+			AND ESTAT_CODI !='B'
+		</if>			
+    </select>
+    
+</mapper>
+	
+	
+

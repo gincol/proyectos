@@ -1,0 +1,20 @@
+### STAGE 1: Build ###
+FROM arm32v7/maven:3.6.1-jdk-8-alpine as builder
+
+COPY . /tmp/app
+COPY pom.xml /tmp/app
+
+WORKDIR /tmp/app
+
+RUN mvn clean package 
+
+
+### STAGE 2: Setup ###
+FROM arm32v7/openjdk:8-jdk-alpine
+
+COPY --from=builder /tmp/app/target/ci-backend.jar /app.jar
+
+EXPOSE 8080
+
+# comando a ejecutar
+CMD ["java", "-jar", "/app.jar", "--spring.profiles.active=des"]

@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: owasp-db-service
+  namespace: arq
+  labels:
+    k8s-app: owasp-db
+    app: owasp-db
+spec:
+  clusterIP: none
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    k8s-app: owasp-db
+    app: owasp-db

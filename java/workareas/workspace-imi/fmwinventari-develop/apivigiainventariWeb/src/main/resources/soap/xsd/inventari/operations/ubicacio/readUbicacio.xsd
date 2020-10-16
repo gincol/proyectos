@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:basic="http://webservices.neru.net.bcn.es/basic/to"
+	xmlns:itinerari="http://webservices.neru.net.bcn.es/itinerari/itinerari/to"
+	xmlns:mestres="http://webservices.neru.net.bcn.es/mestres/to"
+	xmlns:mobiliariFisic="http://webservices.neru.net.bcn.es/inventari/mobiliarifisic/to"
+	xmlns:ubicacio="http://webservices.neru.net.bcn.es/inventari/ubicacio/to"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/ubicacio/to">
+	<xs:import namespace="http://webservices.neru.net.bcn.es/basic/to" schemaLocation="../../../basic/Basic.xsd" />
+	<xs:import namespace="http://webservices.neru.net.bcn.es/inventari/mobiliarifisic/to" schemaLocation="../../MobiliariFisic.xsd" />
+	<xs:import namespace="http://webservices.neru.net.bcn.es/itinerari/itinerari/to" schemaLocation="../../../itinerari/Itinerari.xsd" />
+	<xs:import namespace="http://webservices.neru.net.bcn.es/mestres/to" schemaLocation="../../../mestres/Etiqueta.xsd" />
+	<xs:include schemaLocation="../../Ubicacio.xsd" />
+	<xs:element name="readUbicacioRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicRequestTO">
+					<xs:sequence>
+						<xs:element name="readUbicacioParameters" type="ubicacio:ReadUbicacioParametersTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="readUbicacioResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicResponseTO">
+					<xs:sequence>
+						<xs:element name="readUbicacioResults" type="ubicacio:ReadUbicacioResultsTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ReadUbicacioParametersTO">
+		<xs:sequence>
+			<xs:element name="codi" type="xs:string" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReadUbicacioResultsTO">
+		<xs:complexContent>
+			<xs:extension base="basic:BasicResultTO">
+				<xs:sequence>
+					<xs:element name="ubicacio" type="ubicacio:UbicacioTO" minOccurs="0" maxOccurs="1" />
+					<xs:element name="etiqueta" type="mestres:EtiquetaTO" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+					<xs:element name="itinerariNoVigent" type="itinerari:ItinerariCodiTO" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+					<xs:element name="itinerariVigent" type="itinerari:ItinerariCodiTO" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+					<xs:element name="mobiliariFisic" type="mobiliariFisic:MobiliariFisicTO" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

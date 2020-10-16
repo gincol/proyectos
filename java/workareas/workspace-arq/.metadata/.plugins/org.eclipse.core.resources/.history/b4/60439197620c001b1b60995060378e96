@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owasp-db-deployment
+  namespace: arq
+  labels:
+    k8s-app: owasp-db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: owasp-db
+    spec:
+      containers:
+      - name: owasp-db
+        image: registry.debian.local:5000/owasp-db
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: ci-config-db
+              key: postgres_user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: ci-config-db
+              key: postgres_password
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: ci-config-db
+              key: postgres_db
+        volumeMounts:
+        - mountPath: "/var/lib/postgresql/data"
+          name: owasp-db
+        ports:
+        - containerPort: 5432
+        readinessProbe:
+          tcpSocket:
+            port: 5432
+          periodSeconds: 10
+          initialDelaySeconds: 30
+          timeoutSeconds: 5  
+        livenessProbe:
+          tcpSocket:
+            port: 5432
+          periodSeconds: 10
+          initialDelaySeconds: 40
+          timeoutSeconds: 5  
+      volumes:
+      - name: owasp-db
+        persistentVolumeClaim:
+         claimName: owasp-pv-claim
+            

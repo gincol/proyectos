@@ -1,0 +1,15 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  host: prometheus.debian.local
+  upstreams:
+  - name: prometheus
+    service: prometheus-service
+    port: 80
+  routes:
+  - path: /
+    action:
+      pass: prometheus

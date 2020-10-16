@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.orm.dao.MastersDao">
+   
+	<select id="getCompatibilityMclUbication" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.CompatibilityTypesMCLUbication">
+		SELECT
+			CODI_TIPUS_MCL AS codeMCLType,
+			CODI_TIPUS_UBICACIO AS codeUbicationType
+		FROM
+			TB_COMPATIBILITAT_MCL_UBICACIO
+		WHERE
+            DATA_INICI  <![CDATA[ <= ]]> SYSDATE AND (DATA_FI  <![CDATA[ >= ]]> SYSDATE OR DATA_FI IS NULL)
+	</select>
+	
+	<select id="getCompatibilitySensorRRMM" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.CompatibilityTypesRRMMSensor">
+		SELECT
+			CODI_TIPUS_RRMM AS codeRRMMType,
+			CODI_TIPUS_SENSOR AS codeSensorType
+		FROM
+			TB_COMPATIBILITAT_RRMM_SENSOR
+		WHERE
+            DATA_INICI  <![CDATA[ <= ]]> SYSDATE AND (DATA_FI  <![CDATA[ >= ]]> SYSDATE OR DATA_FI IS NULL)
+	</select>
+	
+	<select id="getCompatibilitySensorMcf" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.CompatibilityTypesMCFSensor">
+		SELECT
+			CODI_TIPUS_MCF AS codeMCFType,
+			CODI_TIPUS_SENSOR AS codeSensorType
+		FROM
+			TB_COMPATIBILITAT_MCF_SENSOR
+		WHERE
+            DATA_INICI  <![CDATA[ <= ]]> SYSDATE AND (DATA_FI  <![CDATA[ >= ]]> SYSDATE OR DATA_FI IS NULL)
+	</select>
+    
+</mapper>

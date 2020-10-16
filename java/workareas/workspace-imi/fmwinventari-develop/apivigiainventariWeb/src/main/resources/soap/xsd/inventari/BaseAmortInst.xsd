@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/instalacio/to">
+	<xs:complexType name="BaseAmortInstTO">
+		<xs:sequence>
+			<xs:element name="concepte" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataFi" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataInici" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="importAmortitzacio" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+			<xs:element name="importRestant" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+			<xs:element name="interessos" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+			<xs:element name="mesosPagats" type="xs:long" minOccurs="1" maxOccurs="1" />
+			<xs:element name="percentatgeFinancament" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+			<xs:element name="periode" type="xs:long" minOccurs="0" maxOccurs="1" />
+			<xs:element name="valor" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

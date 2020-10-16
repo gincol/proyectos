@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:basic="http://webservices.neru.net.bcn.es/basic/to"
+	xmlns:mestres="http://webservices.neru.net.bcn.es/mestres/to"
+	xmlns:ubicacio="http://webservices.neru.net.bcn.es/inventari/ubicacio/to"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/ubicacio/to">
+	<xs:import namespace="http://webservices.neru.net.bcn.es/basic/to" schemaLocation="../../../basic/Basic.xsd" />
+	<xs:import namespace="http://webservices.neru.net.bcn.es/mestres/to" schemaLocation="../../../mestres/Etiqueta.xsd" />
+	<xs:include schemaLocation="../../Ubicacio.xsd" />
+	<xs:element name="updateUbicacioRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicRequestTO">
+					<xs:sequence>
+						<xs:element name="updateUbicacioParameters" type="ubicacio:UpdateUbicacioParametersTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="updateUbicacioResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicResponseTO">
+					<xs:sequence>
+						<xs:element name="updateUbicacioResults" type="ubicacio:UpdateUbicacioResultsTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="UpdateUbicacioParametersTO">
+		<xs:sequence>
+			<xs:element name="ubicacio" type="ubicacio:UbicacioTO" minOccurs="1" maxOccurs="1" />
+			<xs:element name="etiqueta" type="mestres:EtiquetaTO" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpdateUbicacioResultsTO">
+		<xs:complexContent>
+			<xs:extension base="basic:BasicResultTO" />
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

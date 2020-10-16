@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+	xmlns:tns="http://webservices.neru.net.bcn.es" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="http://webservices.neru.net.bcn.es" xmlns:p="http://www.w3.org/2001/XMLSchema">
+	<wsdl:import namespace="http://webservices.neru.net.bcn.es/execucio/esdeveniment" location="execucio/esdeveniment.wsdl"/>  
+	<wsdl:import namespace="http://webservices.neru.net.bcn.es/inventari/amortagregada" location="inventari/amortagregada.wsdl"/> 
+	<wsdl:import namespace="http://webservices.neru.net.bcn.es/inventari/comerc" location="inventari/comerc.wsdl"/> 
+	<wsdl:import namespace="http://webservices.neru.net.bcn.es/inventari/instalacio" location="inventari/instalacio.wsdl"/> 
+	<wsdl:import namespace="http://webservices.neru.net.bcn.es/inventari/mobiliarifisic" location="inventari/mobiliarifisic.wsdl"/>
+	<wsdl:import namespace="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic" location="inventari/mobiliarilogic.wsdl"/>
+	<wsdl:import namespace="http://webservices.neru.net.bcn.es/inventari/recursmaterial" location="inventari/recursmaterial.wsdl"/>
+	<wsdl:import namespace="http://webservices.neru.net.bcn.es/inventari/ubicacio" location="inventari/ubicacio.wsdl"/>
+	<wsdl:import namespace="http://webservices.neru.net.bcn.es/itinerari/planificacio" location="itinerari/planificacio.wsdl"/>
+</wsdl:definitions>

@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: '@project.artifactId@'
+  datasource:
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+    url: jdbc:postgresql://192.168.1.4:5432/postgres
+    username: postgres
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true 
+    
+management:
+  metrics:
+    tags:
+      application: '@project.artifactId@'
+  endpoints:
+    web:
+      exposure:
+        include: 'health,prometheus'
+        exclude: env
+        

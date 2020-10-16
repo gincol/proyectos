@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>es.bcn.imi.framework.vigia</groupId>
+		<artifactId>apivigiafrontal</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<artifactId>apivigiafrontalWeb</artifactId>
+	<packaging>war</packaging>
+
+	<properties>
+		<java-1.8-version>1.8</java-1.8-version>
+		<project.compiler.source.java.level>${java-1.8-version}</project.compiler.source.java.level>
+		<project.compiler.target.java.level>${java-1.8-version}</project.compiler.target.java.level>
+		<project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<finalName>vigia</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<source>${project.compiler.source.java.level}</source>
+					<target>${project.compiler.target.java.level}</target>
+					<warSourceDirectory>WebContent</warSourceDirectory>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						<manifestEntries>
+							<Class-Path>libcommons-1.0.0.jar libutils-1.0.0.jar</Class-Path>
+						</manifestEntries>
+					</archive>			
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>${project.compiler.source.java.level}</source>
+					<target>${project.compiler.target.java.level}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Spec.*</include>
+						<include>**/*Test.*</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<configuration>
+					<destFile>${basedir}/target/jacoco.exec</destFile>
+					<dataFile>${basedir}/target/jacoco-it.exec</dataFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>jacoco-initialize</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/vigia/WEB-INF/lib</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/resources/lib</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<dependencies>
+	
+		<dependency>
+		    <groupId>es.bcn.vigia.fmw.libcommons</groupId>
+		    <artifactId>libcommons</artifactId>
+		    <scope>system</scope>
+		    <version>1.0.0</version>
+		    <systemPath>${basedir}/src/main/resources/lib/libcommons-1.0.0.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+		    <groupId>es.bcn.vigia.fmw.libutils</groupId>
+		    <artifactId>libutils</artifactId>
+		    <scope>system</scope> 
+		    <version>1.0.0</version>   
+		    <systemPath>${basedir}/src/main/resources/lib/libutils-1.0.0.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+		    <groupId>oracle.jdbc</groupId>
+		    <artifactId>ojdbc6</artifactId>
+		    <scope>system</scope>
+		    <version>1.0.0</version>
+		    <systemPath>${basedir}/src/main/resources/lib/ojdbc6.jar</systemPath>
+		</dependency>
+		
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>nonwas_build</id>
+			<build>
+				<finalName>vigia</finalName>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

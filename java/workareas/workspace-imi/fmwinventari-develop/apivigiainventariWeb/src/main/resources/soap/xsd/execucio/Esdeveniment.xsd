@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	elementFormDefault="qualified"
+	xmlns:esdeveniment="http://webservices.neru.net.bcn.es/execucio/esdeveniment/to"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservices.neru.net.bcn.es/execucio/esdeveniment/to">
+	<xs:complexType name="EsdevenimentTO">
+		<xs:sequence>
+			<xs:element name="codi" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="codiContractista" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="codiItinerari" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="codiTipusEsdeveniment" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="dataEsdeveniment" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="dataExecucio" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="dataFi" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataInici" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="observacions" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="usuariInsercio" type="xs:string" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EsdevenimentDAnullacioTO">
+		<xs:complexContent>
+		    <xs:extension base="esdeveniment:EsdevenimentTO">
+		      <xs:sequence>
+		        <xs:element name="codiEsdevenimentAnullat" type="xs:string" minOccurs="1" maxOccurs="1" />
+		        <xs:element name="codiMotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+				<xs:element name="codiSubmotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+		      </xs:sequence>
+		    </xs:extension>
+	    </xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EsdevenimentDAnullacioItinerariTO">
+		<xs:complexContent>
+		    <xs:extension base="esdeveniment:EsdevenimentTO">
+		      <xs:sequence>
+		        <xs:element name="codiMotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+				<xs:element name="codiSubmotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+		      </xs:sequence>
+		    </xs:extension>
+	    </xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EsdevenimentDAPSTO">
+		<xs:complexContent>
+		    <xs:extension base="esdeveniment:EsdevenimentTO">
+		      <xs:sequence>
+		      	<xs:element name="codiMotiu" type="xs:string" minOccurs="1" maxOccurs="1" />
+		        <xs:element name="codiPreuAgrupat" type="xs:string" minOccurs="1" maxOccurs="1" />
+		        <xs:element name="codiRrrmm" type="xs:string" minOccurs="0" maxOccurs="1" />
+				<xs:element name="codiSubmotiu" type="xs:string" minOccurs="1" maxOccurs="1" />
+		      </xs:sequence>
+		    </xs:extension>
+	    </xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EsdevenimentDConcrecioTO">
+		<xs:complexContent>
+		    <xs:extension base="esdeveniment:EsdevenimentTO">
+		    	<xs:sequence>
+		    		<xs:element name="codiMotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+		    		<xs:element name="codiPlantaPesatge" type="xs:string" minOccurs="0" maxOccurs="1" />
+		    		<xs:element name="codiPreuAgrupat" type="xs:string" minOccurs="1" maxOccurs="1" />
+		    		<xs:element name="codiRrrmm" type="xs:string" minOccurs="0" maxOccurs="1" />
+					<xs:element name="codiSubmotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+		    	</xs:sequence>
+	    	</xs:extension>
+	    </xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EsdevenimentDDescarreguesTO">
+		<xs:complexContent>
+		    <xs:extension base="esdeveniment:EsdevenimentTO">
+		      <xs:sequence>
+		      	<xs:element name="codiMotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+		        <xs:element name="codiPlantaPesatge" type="xs:string" minOccurs="1" maxOccurs="1" />
+				<xs:element name="codiSubmotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+		      </xs:sequence>
+		    </xs:extension>
+	    </xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EsdevenimentDServeiTO">
+		<xs:complexContent>
+		    <xs:extension base="esdeveniment:EsdevenimentTO">
+		    	<xs:sequence>
+			    	<xs:element name="codiMotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+			    	<xs:element name="codiPlantaPesatge" type="xs:string" minOccurs="0" maxOccurs="1" />
+		    		<xs:element name="codiPreuAgrupat" type="xs:string" minOccurs="0" maxOccurs="1" />
+		    		<xs:element name="codiRrrmm" type="xs:string" minOccurs="0" maxOccurs="1" />
+					<xs:element name="codiSubmotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+		    	</xs:sequence>
+		    </xs:extension>
+	    </xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EsdevenimentInformatiuTO">
+		<xs:complexContent>
+		    <xs:extension base="esdeveniment:EsdevenimentTO">
+		    	<xs:sequence>
+			    	<xs:element name="codiMotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+					<xs:element name="codiSubmotiu" type="xs:string" minOccurs="0" maxOccurs="1" />
+		    	</xs:sequence>
+		    </xs:extension>
+	    </xs:complexContent>
+	</xs:complexType>
+</xs:schema>

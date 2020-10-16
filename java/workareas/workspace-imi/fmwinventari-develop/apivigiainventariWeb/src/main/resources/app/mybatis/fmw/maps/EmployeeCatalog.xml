@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.inventari.integration.orm.dao.EmployeeCatalogDao">
+    
+	<insert id="insert" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.EmployeeCatalog">
+		INSERT INTO TB_CATALEG_PERSONAL
+			(
+				CATALEG_PERSONAL_ID,
+				CODI,
+				CODI_CONTRACTA,
+				SEXE,
+				CODI_CATEGORIA_PROFESSIONAL,
+				CODI_REGIM_TREBALL,
+				CODI_RELACIO_LABORAL,
+				MINUSVALIDESA,
+				CODI_PROCEDENCIA_CONTRACTACIO,
+				CODI_TIPUS_PERSONAL,
+				DATA_REFERENCIA,
+				DATA_INICI,
+				DATA_INSERCIO,
+				USUARI_INSERCIO
+			) 
+	VALUES
+			(SEQ_CATALEG_PERSONAL.NEXTVAL,
+			#{code},
+			#{codeContract},
+			#{sex},
+			#{codeProfessionalCategory},
+			#{codeWorkRegime},
+			#{codeLaborRelationship},
+			#{handicap},
+			#{codeContractingProvenance},
+			#{typePersonal},
+			TO_TIMESTAMP(#{dateReference}, 'dd/MM/yyyy HH24:MI:SS'),
+			SYSTIMESTAMP,
+			SYSTIMESTAMP,
+			#{userInsert})
+			
+	</insert> 
+	<select id="selectEmployeeCatalog" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.EmployeeCatalog">
+		SELECT
+			CODI_CONTRACTA as codeContract,
+			DATA_REFERENCIA as dateReference,
+			CODI as code,
+			SEXE as sex,
+			CODI_CATEGORIA_PROFESSIONAL as codeProfessionalCategory,
+			CODI_REGIM_TREBALL as codeWorkRegime,
+			CODI_RELACIO_LABORAL as codeLaborRelationship,
+			MINUSVALIDESA as handicap,
+			CODI_PROCEDENCIA_CONTRACTACIO as codeContractingProvenance,
+			CODI_TIPUS_PERSONAL as typePersonal
+		FROM
+			TB_CATALEG_PERSONAL			
+		WHERE 
+			CATALEG_PERSONAL_ID IN (
+                SELECT
+                    MAX(CATALEG_PERSONAL_ID)
+                FROM
+                    TB_CATALEG_PERSONAL
+                WHERE
+                    CODI_CONTRACTA = #{codeContract}						
+						AND DATA_REFERENCIA <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY')
+						AND DATA_REFERENCIA <![CDATA[<]]> TO_TIMESTAMP(#{dateReference2}, 'DD-MM-YYYY')
+                GROUP BY CODI
+            )
+    </select>
+    
+    <select id="selectEmployeeCatalogMassive" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.EmployeeCatalog">
+		SELECT
+			CODI_CONTRACTA as codeContract,
+			DATA_REFERENCIA as dateReference,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd,
+			CODI as code
+		FROM
+			TB_CATALEG_PERSONAL
+		WHERE
+			CODI_CONTRACTA = #{codeContract}
+			<if test="dateReference != null">
+				AND DATA_REFERENCIA IN (
+					SELECT
+						MAX(DATA_REFERENCIA)
+					FROM
+						TB_CATALEG_PERSONAL
+					WHERE
+						CODI_CONTRACTA = #{codeContract}			
+						AND DATA_REFERENCIA <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY')
+						GROUP BY CODI
+				)			
+			</if>
+    </select>
+</mapper>

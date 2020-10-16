@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.inventari.integration.orm.dao.gap.MaterialResourceGapDao">
+	
+	<select id="selectMaterialResourceVehicleMassive" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.MaterialResourceGap">
+        SELECT
+       		CODI as code,
+			CODI_CONTRACTA as codeContract,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd
+       	FROM 
+           	VW_MASIVA_RRMM
+       	WHERE
+       		CODI_CONTRACTA = #{codeContract}
+			<if test="code != null">				
+		    	AND CODI = #{code}	
+			</if>
+			<if test="dateReference == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+    </select> 
+	
+	<select id="selectMaterialResourceVehicle" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.MaterialResourceGap">
+        SELECT
+       		'' as codeUser,
+			CONTRACTA_CODI as codeContract,
+			CODI as code,
+			TIPUS_TITULARITAT as codeTypeTitularity,
+			INSTALACIO_CODI as codeInstallation,
+			GRUP_RM_CODI as codeGroup,
+			TIPUS_RM_CODI as type,
+			ESTAT_CODI as state,
+			RFID as rfid,
+			SUBJECTE_AMORT as amortizationSubject,
+			DESCRIPCIO as description,
+			MATRICULA as registration,
+			MATRICULA_PROVISIONAL as provisionalRegistration,
+			CALCA as calca,
+			XASSIS as chassis,
+			BASTIDOR as frame,
+			CODI_MARCA as codeBrand,
+			CODI_MODEL as codeModel,
+			'' as category,
+			TARA as tara,
+			PMA as pma,
+			CAPACITAT_CARREGA as capacity,
+			'' as loadingTechnology,
+			CODI_ENERGIA_MOTRIU as codeMotorEnergyType,
+			DARRERA_ITV as lastItvDate,
+			PROPERA_ITV as nextItvDate,
+			'' as euroStandard,
+			'' as typeEmissions,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd
+       	FROM 
+           	VW_RRMM
+       	WHERE
+       		CONTRACTA_CODI = #{codeContract}
+			<if test="code != null">				
+		    	AND CODI = #{code}	
+			</if>
+			<if test="dateReference == null and period == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+			<if test="period != null">
+				AND DATA_INICI = (
+					SELECT
+						MAX(DATA_INICI)
+					FROM
+						VW_RRMM
+					WHERE
+						CONTRACTA_CODI = #{codeContract}						
+						<if test="code != null">				
+					    	AND CODI = #{code}	
+						</if>
+						AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{period}, 'DD-MM-YYYY')
+				)			
+			</if>
+    </select> 
+    
+    <select id="selectApportionmentsByRRMM" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.ApportionmentGap">
+	    SELECT
+			CODI_GRUP_SERVEI as codeService,
+			PERCENTATGE as percentage,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd
+		FROM
+			VW_PRORRATEIG_RRMM
+		WHERE
+			CONTRACTA_CODI = #{codeContract}
+			AND RRMM_CODI = #{code}
+			<if test="dateReference == null and period == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))			
+			</if>
+			<if test="period != null">
+				AND DATA_INICI = (
+					SELECT
+						MAX(DATA_INICI)
+					FROM
+						VW_PRORRATEIG_RRMM
+					WHERE
+						CONTRACTA_CODI = #{codeContract}						
+						<if test="code != null">				
+					    	AND RRMM_CODI = #{code}	
+						</if>
+						AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{period}, 'DD-MM-YYYY')
+				)			
+			</if>
+    </select>
+    
+    <select id="selectExpensesByRRMM" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.ExpenseGap">
+	    SELECT
+			IMPORT as amount,
+			PERIODE as period,
+			CODI_TIPUS_DESPESA as codeType,
+			CODI_SUBTIPUS_DESPESA as codeSubType,
+			MESOS_PAGATS as monthsPaid,
+			CONCEPTE as concept,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd
+		FROM
+			VW_DESPESES_RRMM
+		WHERE
+			CONTRACTA_CODI = #{codeContract}
+			AND RRMM_CODI = #{code}	
+			<if test="dateReference == null and period == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_DATE(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_DATE(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+    </select>
+    
+    <select id="selectAmortizationBasesByRRMM" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.AmortizationBaseGap">
+    	SELECT
+			CONCEPTE as concept,
+			VALOR as value,
+			PERCENT_FINANCAMENT as percentageFunding,
+			INTERESSOS as interests,
+			VALOR_AMORTITZACIO as valorAmortitzacio,
+			MESOS_PAGATS as monthsPaid,
+			PERIODE as period,
+			DATA_INICI as dataStart,
+			DATA_FI as dataEnd
+		FROM
+			VW_BASE_AMORT_RRMM
+		WHERE
+			CONTRACTA_CODI = #{codeContract}
+			AND RRMM_CODI = #{code}
+			<if test="dateReference == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>  
+    </select>
+    
+    <select id="selectDetailCertificationAmortizationByRRMM" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.DetailCertificationGap">
+    	SELECT
+			CONCEPTE as concept,
+			MESOS_PAGATS as monthsPaid,
+			IMPORT as amountAmortization,
+			IMPORT_RESTANT as amountRemaining,
+			CODI_TIPUS_AMORTITZACIO as typeAmortization,
+			DATA_CERTIFICACIO as dateCertification,
+			CODI_GRUP_SERVEI as codeService
+		FROM
+			VW_AMORT_INVERSIONS_RRMM
+		WHERE
+			CONTRACTA_CODI = #{codeContract}
+			AND RRMM_CODI = #{code}					
+			<if test="period == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)					
+			</if>    
+			<if test="period != null">
+				AND DATA_INICI = (
+					SELECT
+						MAX(DATA_INICI)
+					FROM
+						VW_AMORT_INVERSIONS_RRMM
+					WHERE
+						CONTRACTA_CODI = #{codeContract}						
+						<if test="code != null">				
+					    	AND RRMM_CODI = #{code}	
+						</if>
+						AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{period}, 'DD-MM-YYYY')
+				)			
+			</if>     
+	</select>
+    
+    <select id="selectDetailCertificationExpensesByRRMM" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.DetailCertificationGap">
+    	SELECT
+			CONCEPTE as concept,
+			MESOS_PAGATS as monthsPaid,
+			IMPORT as amountAmortization,
+			IMPORT_RESTANT as amountRemaining,
+			CODI_TIPUS_AMORTITZACIO as typeAmortization,
+			DATA_CERTIFICACIO as dateCertification,
+			CODI_GRUP_SERVEI as codeService
+		FROM
+			VW_AMORT_DESP_RRMM
+		WHERE
+			CONTRACTA_CODI = #{codeContract}
+			AND RRMM_CODI = #{code}		
+			<if test="period == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)					
+			</if>    
+			<if test="period != null">
+				AND DATA_INICI = (
+					SELECT
+						MAX(DATA_INICI)
+					FROM
+						VW_AMORT_DESP_RRMM
+					WHERE
+						CONTRACTA_CODI = #{codeContract}						
+						<if test="code != null">				
+					    	AND RRMM_CODI = #{code}	
+						</if>
+						AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{period}, 'DD-MM-YYYY')
+				)			
+			</if>     
+	</select>
+
+</mapper>

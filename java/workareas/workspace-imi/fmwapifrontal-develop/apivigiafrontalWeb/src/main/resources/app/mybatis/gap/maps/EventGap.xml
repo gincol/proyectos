@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.gap.execution.orm.dao.EventGapDao">
+   
+    <select id="getEventsGap" parameterType="java.lang.String" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.EventGap">
+        SELECT 
+			CONTRACTA_CODI AS codeContract, 
+			CODI_ITINERARI AS codeItinerary,
+			CODI AS code,
+			DATA_ESDEVENIMENT AS dateEvent,	
+			GRUP_ESDEVENIMENT_CODI AS codeGroupEvent,
+			TIPUS_ESDEVENIMENT_CODI AS codeType,
+			ESTAT_VALIDACIO	AS stateValidation,
+			MOTIU AS codeReason,
+			SUBMOTIU AS codeSubReason,
+			OBSERVACIONS AS observations,
+			CODI_PREU_AGRUPAT AS codeGroupedPrice,
+			RRMM_CODI AS codeRRMM,
+			PLANTA_DESCARREGA AS codePlantWeighing
+		FROM 
+			VW_ESDEVENIMENT
+		WHERE 
+			CODI = #{code}		
+	</select>
+
+
+    
+</mapper>

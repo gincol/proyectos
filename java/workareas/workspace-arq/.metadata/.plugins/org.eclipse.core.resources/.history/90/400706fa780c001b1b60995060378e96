@@ -1,0 +1,13 @@
+package cat.vn.owasp;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class SbOwaspApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" 
+	xmlns:basic="http://webservices.neru.net.bcn.es/basic/to"
+	xmlns:mobiliariLogic="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic/to" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic/to">
+	<xs:import namespace="http://webservices.neru.net.bcn.es/basic/to" schemaLocation="../../../basic/Basic.xsd" />
+	<xs:include schemaLocation="../../MobiliariLogic.xsd" />
+	<xs:element name="createMobiliariLogicRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicRequestTO">
+					<xs:sequence>
+						<xs:element name="createMobiliariLogicParameters" type="mobiliariLogic:CreateMobiliariLogicParametersTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="createMobiliariLogicResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicResponseTO">
+					<xs:sequence>
+						<xs:element name="createMobiliariLogicResults" type="mobiliariLogic:CreateMobiliariLogicResultsTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CreateMobiliariLogicParametersTO">
+		<xs:sequence>
+			<xs:element name="mobiliariLogic" type="mobiliariLogic:MobiliariLogicTO" minOccurs="1" maxOccurs="1" />
+			<xs:element name="ubicacio" type="mobiliariLogic:LogicUbicacioTO" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateMobiliariLogicResultsTO">
+		<xs:complexContent>
+			<xs:extension base="basic:BasicResultTO" />
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

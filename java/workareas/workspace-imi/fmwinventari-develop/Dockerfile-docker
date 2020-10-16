@@ -1,0 +1,7 @@
+FROM tomcat:8.5.34
+
+COPY apivigiainventari/apivigiainventariWeb/target/vigia.war /usr/local/tomcat/webapps/vigia.war
+COPY apivigiainventari/cloud/docker/server.xml /usr/local/tomcat/conf/
+COPY apivigiainventari/cloud/docker/context.xml /usr/local/tomcat/conf/
+
+EXPOSE 8080

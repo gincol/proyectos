@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:13-alpine
+    container_name: db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - MYSQL_ROOT_PASSWORD=postgres
+      - MYSQL_USER=postgres
+      - MYSQL_PASSWORD=postgres
+      - MYSQL_DATABASE=owasp
+    volumes:
+      - owasp-db:/var/lib/postgresql/data
+      
+  app:
+    build: 
+      context: ./cloud/docker
+      dockerfile: Dockerfile-app  
+    image: owasp-app:1.0.0    
+    container_name: app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - postgres_host=db
+      - postgres_db=owasp
+      - postgres_user=postgres
+      - postgres_password=postgres
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - db
+      
+volumes:
+  owasp-db:      

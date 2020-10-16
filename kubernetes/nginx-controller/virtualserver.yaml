@@ -1,0 +1,16 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: debian-local
+spec:
+  host: debian.local
+  tls:
+    secret: debian.local-secret
+  upstreams:
+  - name: nginx
+    service: nginx-service
+    port: 80
+  routes:
+  - path: /
+    action:
+      pass: nginx

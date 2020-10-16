@@ -1,0 +1,43 @@
+log4j.properties.location=log4j-LOCAL.xml
+
+spring.kafka.producer.bootstrap-servers=imifmwvigia.eu-de.containers.appdomain.cloud:31300
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+
+
+spring.data.elasticsearch.properties.host=192.168.99.106
+spring.data.elasticsearch.properties.port=9200
+spring.data.elasticsearch.properties.protocol=http
+
+app.url.apivigiafrontal 	= http://localhost:8080/apivigiafrontal/frontal/
+
+app.url.apiPortalServiceContent = http://localhost:8080/vigia/services/fmwvigia/inventari/ubicacions
+
+#----------------------------------------------------------------------------------------
+#----------------------------- Path Certification -------------------------------------------
+#----------------------------------------------------------------------------------------
+#----------------------------- orquestador ----------------------------------------------
+url.path.certification = /certificacio
+
+#------------------------------- Paths consultas ----------------------------------------------
+url.api.certification 						= http://vigia.int.icp.ajuntament.bcn/
+
+
+
+#----------------------------------------------------------------------------------------
+#------------------------------ Path Load Properties ------------------------------------
+#----------------------------------------------------------------------------------------
+
+load.properties.client.id.key = clientId
+load.properties.client.id.key.ibm = x-ibm-client-id
+load.properties.client.id.value.ibm = bc6750e0-252a-467a-b4ae-ef6a027c9983
+
+url.api.orquestrador = http://localhost:8080/orquestrador/fmw/orquestrador
+
+
+#----------------------------------------------------------------------------------------
+#------------------------------ URL Node JS ------------------------------------
+#----------------------------------------------------------------------------------------
+
+url.api.fmw.nodejs = http://vigia.int.icp.ajuntament.bcn/services/vigia/fmwnodejs

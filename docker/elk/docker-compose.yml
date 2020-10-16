@@ -1,0 +1,142 @@
+version: '3.8'
+services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      # - xpack.security.enabled=true
+      # - ELASTIC_USERNAME=elastic
+      # - ELASTIC_PASSWORD=osxpersonal
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    container_name: es02
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      # - xpack.security.enabled=true
+      # - ELASTIC_USERNAME=elastic
+      # - ELASTIC_PASSWORD=osxpersonal
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data02:/usr/share/elasticsearch/data
+    ports:
+      - 9201:9201
+    networks:
+      - elastic
+
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    container_name: es03
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      # - xpack.security.enabled=true
+      # - ELASTIC_USERNAME=elastic
+      # - ELASTIC_PASSWORD=osxpersonal
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data03:/usr/share/elasticsearch/data
+    ports:
+      - 9202:9202
+    networks:
+      - elastic
+
+  kib01:
+    #image: docker.elastic.co/kibana/kibana:7.9.2
+    build: ./kibana
+    container_name: kib01
+    ports:
+      - 5601:5601
+    environment:
+      #xpack.security.enabled: true
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: http://es01:9200
+      # ELASTICSEARCH_USERNAME: elastic
+      # ELASTICSEARCH_PASSWORD: osxpersonal
+    networks:
+      - elastic
+
+  auditbeat:
+    #image: docker.elastic.co/beats/auditbeat:${ELASTIC_VERSION:-7.9.2}
+    build: ./auditbeat
+    container_name: auditbeat
+    # https://github.com/docker/swarmkit/issues/1951
+    hostname: "auditbeat"
+    # Need to override user so we can access the log files, and docker.sock
+    user: root
+    # https://www.elastic.co/guide/en/beats/auditbeat/current/running-on-docker.html#_special_requirements
+    # PID and CAP_ADD options are ignored as they are Not yet available in swarm mode at the moment.
+    # Eagerly waiting for Docker 19.06 release which will bring --privileged flag to Docker
+    # Swarm Mode https://github.com/moby/moby/issues/24862#issuecomment-451594187
+    # support for capabilities https://github.com/moby/moby/pull/38380
+    pid: host
+    cap_add:
+      - AUDIT_CONTROL
+      - AUDIT_READ
+    networks:
+      - elastic
+    # configs:
+    #   - source: ab_config
+    #     target: /usr/share/auditbeat/auditbeat.yml
+    volumes:
+      - auditbeat:/usr/share/auditbeat/data
+      - /var/log:/var/log:ro
+    environment:
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-es01},es02,es03
+      - KIBANA_HOST=${KIBANA_HOST:-kib01}
+      # - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME:-elastic}
+      # - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD:-osxpersonal}
+    command: ["--strict.perms=false"]
+    depends_on:
+      - kib01
+    deploy:
+      mode: global
+
+volumes:
+  data01:
+    driver: local
+  data02:
+    driver: local
+  data03:
+    driver: local
+  auditbeat:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge
+
+# configs:
+#   ab_config:
+#     file: $PWD/auditbeat/auditbeat.yml

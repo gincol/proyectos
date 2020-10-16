@@ -1,0 +1,43 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  config.yml: |-
+    global:
+    templates:
+    - '/etc/alertmanager/*.tmpl'
+
+    route:
+      receiver: 'slack-notifications'
+
+    receivers:
+    - name: 'slack-notifications'
+      slack_configs:
+      - channel: '#ios-local'
+        send_resolved: true
+        icon_url: https://avatars3.githubusercontent.com/u/3380462
+        api_url: 'https://hooks.slack.com/services/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'
+        title: |-
+         [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} for {{ .CommonLabels.job }}
+         {{- if gt (len .CommonLabels) (len .GroupLabels) -}}
+           {{" "}}(
+           {{- with .CommonLabels.Remove .GroupLabels.Names }}
+             {{- range $index, $label := .SortedPairs -}}
+               {{ if $index }}, {{ end }}
+               {{- $label.Name }}="{{ $label.Value -}}"
+             {{- end }}
+           {{- end -}}
+           )
+         {{- end }}
+        text: >-
+          {{ range .Alerts -}}
+          *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
+          *Description:* {{ .Annotations.description }}
+
+          *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}

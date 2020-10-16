@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: '@project.artifactId@'
+  flyway:
+    enabled: true
+    locations: classpath:db
+    schemas: owasp
+    baseline-on-migrate: true #NEVER CHANGE BASELINE TO TRUE
+    validate-on-migrate: true #true to populate local DB
+    table: schema_version
+        
+management:
+  metrics:
+    tags:
+      application: '@project.artifactId@'
+  endpoints:
+    web:
+      exposure:
+        include: 'health,prometheus'
+        exclude: env
+                
+swagger:
+  basepackage: cat.vn.owasp 

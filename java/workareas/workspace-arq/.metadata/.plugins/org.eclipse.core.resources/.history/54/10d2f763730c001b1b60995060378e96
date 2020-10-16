@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: '@project.artifactId@'
+  flyway:
+    enabled: true
+    locations: classpath:db
+    schemas: owasp
+        
+management:
+  metrics:
+    tags:
+      application: '@project.artifactId@'
+  endpoints:
+    web:
+      exposure:
+        include: 'health,prometheus'
+        exclude: env
+                
+swagger:
+  basepackage: cat.vn.owasp 

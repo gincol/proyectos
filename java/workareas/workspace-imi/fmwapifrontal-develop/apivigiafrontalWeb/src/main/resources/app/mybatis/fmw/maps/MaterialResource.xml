@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.inventary.orm.dao.MaterialResourceDao">
+	
+	<select id="selectNoVehiclesByCode" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.MaterialResource">
+        	(
+        		SELECT
+        			CODE,
+        			CODE_CONTRACT
+        		FROM 
+            		TB_RRMM
+        		WHERE
+	        		CODE_CONTRACT = #{codeContract}
+					AND CODE = #{codeRRMM}
+					AND DATE_END IS NULL
+			) MINUS (
+				SELECT
+        			CODE,
+        			CODE_CONTRACT
+        		FROM 
+            		TB_RRMM_VEHICLE
+        		WHERE
+	        		CODE_CONTRACT = #{codeContract}
+					AND CODE = #{codeRRMM}
+					AND DATE_END IS NULL
+			)	
+    </select>
+	
+
+</mapper>

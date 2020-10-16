@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.gap.execution.orm.dao.PlantWeighingGapDao">
+
+   
+    <select id="getPlantWeighingsGap" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.PlantWeighingGap">
+        SELECT 
+	        CODI AS code, 
+			DESCRIPCIO AS description,
+			TIPUS_CODI AS codeType, 
+			TIPUS_DESCRIPCIO AS descriptionType,
+			FRACCIO_CODI AS codeFraction,
+			FRACCIO_DESCRIPCIO AS descriptionFraction
+		FROM 
+			VW_DM_PLANTA_PESATGE
+		WHERE 
+			CODI = #{code}
+    </select>
+    
+</mapper>

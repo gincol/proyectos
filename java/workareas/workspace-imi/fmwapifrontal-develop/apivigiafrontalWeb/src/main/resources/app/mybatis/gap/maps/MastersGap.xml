@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.orm.dao.MastersGapDao">
+   
+    <select id="getServiceHierarchy" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.ServiceHierarchyGap">
+		SELECT
+			CODI as codeService,
+			DESCRIPCIO as description,
+			'' as dateStart,
+			'' as dateEnd,
+			
+			GRUP_CODI as codeGroupService,
+			GRUP_DESCRIPCIO as descriptionGroup,
+			'' as dateStartGroup,
+			'' as dateEndGroup,
+			
+			TIPUS_CODI as codeTypeService,
+			TIPUS_DESCRIPCIO as descriptionType,
+			'' as dateStartType,
+			'' as dateEndType,
+			
+			TRACTAMENT_CODI as treatmentCode,
+			TRACTAMENT_DESCRIPCIO as treatmentDescription,
+			'' as fraction,
+			'' as reasonChange,
+			DATA_INICI as treatmentDateStart,
+			DATA_FI as treatmentDateEnd,
+			'' as paymentType			
+		FROM
+			VW_DM_SERVEI
+		WHERE 1=1			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+		ORDER BY CODI, GRUP_CODI, TIPUS_CODI, TRACTAMENT_CODI
+	</select>
+	
+	<select id="getServiceContract" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.ServiceContractGap">
+		SELECT			
+			CODI as codeContract,
+			CIF as cif,
+			DESCRIPCIO as description,
+			CARRER as streetName,
+			NUMERO_INICI as startNumber,
+			NUMERO_FI as endNumber,
+			POBLACIO as city,
+			CODI_POSTAL as postalCode,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd,
+			RAO_CANVI as reasonChange,
+			
+			CODI_SERVEI as codeService,
+			CODI_GRUP_SERVEI as codeGroupService,
+			CODI_TIPUS_SERVEI as codeTypeService,
+			CODI_TRACTAMENT as treatment,
+			CODI_ZONA as zone,
+			TRACT_CONTRAC_DATA_FI as treatmentDateStart,
+			TRACT_CONTRAC_DATA_INICI as treatmentDateEnd,
+			'' as treatmentReasonChange
+		FROM
+			VW_CONTRACTISTES
+		WHERE 1=1			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>			
+			<if test="codeContract != null">
+				AND CODI = #{codeContract}
+			</if>	
+		ORDER BY CODI, CODI_SERVEI
+	</select>
+	
+	<select id="getServiceSubContract" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.ServiceSubContractGap">
+		SELECT		
+			CONTRACTISTA_CODI as codeContract,
+			CODI as codeSubContract,
+			CIF as cif,
+			DESCRIPCIO as description,
+			CARRER as streetName,
+			NUMERO_INICI as startNumber,
+			NUMERO_FI as endNumber,
+			POBLACIO as city,
+			CODI_POSTAL as postalCode,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd,
+			RAO_CANVI as reasonChange,
+			
+			CODI_SERVEI as codeService,
+			CODI_GRUP_SERVEI as codeGroupService,
+			CODI_TIPUS_SERVEI as codeTypeService,
+			CODI_TRACTAMENT as treatment,
+			TRACT_CONTRAC_DATA_INICI as treatmentDateStart,
+			TRACT_CONTRAC_DATA_FI as treatmentDateEnd,
+			'' as treatmentReasonChange
+		FROM
+			VW_SUBCONTRACTISTES
+		WHERE 1=1			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>		
+			<if test="codeContract != null">
+				AND CONTRACTISTA_CODI = #{codeContract}
+			</if>		
+			<if test="codeSubContract != null">
+				AND CODI = #{codeSubContract}
+			</if>	
+		ORDER BY CODI, CODI_SERVEI
+	</select>
+	
+	<select id="getWasteManagementPlantMassive" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.WasteManagementPlantMassiveGap">
+		SELECT
+			CODI as code,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd
+		FROM
+			VW_MASIVA_GESTIO_RESIDUS
+		WHERE 1=1			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+	</select>
+	
+	<select id="getWasteManagementPlantDetailed" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.WasteManagementPlantDetailedGap">
+		SELECT
+			CODI as code,
+			DESCRIPCIO as description,
+			CARRER as streetName,
+			NUMERO_INICI as startNumer,
+			NUMERO_FI as endNumber,
+			POBLACIO as city,
+			CODI_POSTAL as postalCode,
+			COORDINADA_X as coordinateX,
+			COORDINADA_Y as coordinateY,
+			PGR_CODI as type,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd,
+			RAO_CANVI as reasonChange,
+			
+			CODI_FRACCIO as fractionType,
+			DESCRIPCIO_FRACCIO as fractionDescription
+		FROM
+			VW_GESTIO_RESIDUS
+		WHERE 1=1			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>		
+			<if test="code != null">
+				AND CODI = #{code}
+			</if>
+		ORDER BY CODI, CODI_FRACCIO
+	</select>
+	
+	<select id="getEventClassification" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.EventClassificationGap">
+		SELECT
+			GRUP_ESDEVENIMENT_CODI as codeGroup,
+			GRUP_ESDEVENIMENT_DESC as descriptionGroup,
+			TIPUS_ESDEVENIMENT_CODI as codeType,
+			TIPUS_ESDEVENIMENT_DESC as descriptionType,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd
+		FROM
+			VW_CLASSIFICACIO_ESDEVENIMENT
+		WHERE 1=1			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+	</select>
+	
+	<select id="getBranchModelsVehicle" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.BranchModelsVehicleGap">
+		SELECT
+			CODI as codeBranch,
+			DESCRIPCIO as descriptionBranch,
+			MODEL_CODI as codeModel,
+			MODEL_DESCRIPCIO as descriptionModel,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd
+		FROM
+			VW_DM_MARCA_RRMM
+		WHERE 1=1			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+	</select>
+	
+	<select id="getHolidayCalendar" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.HolidayCalendarGap">
+		SELECT
+			DATA as day,
+			DESCRIPCIO as description
+		FROM
+			VW_CALENDARI_EXEPCIO
+		WHERE 1=1			
+			<if test="year != null">
+				AND TO_NUMBER(EXTRACT(YEAR from DATA)) = #{year}
+			</if>
+	</select>
+	
+	<select id="getWorkRegimeRelationship" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.WorkRegimeRelationshipGap">
+		SELECT
+			CONTRACTA_CODI as codeContract,
+			SERVEI as service,
+			CODI_REGIM_TREBALL as code,
+			DESCRIPCIO_REGIM_TREBALL as description,
+			HORES_JORNADA as workingDayHours,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd
+		FROM
+			VW_TEMPS_PLANIFICAT
+		WHERE 1=1			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>		
+			<if test="codeContract != null">
+				AND CONTRACTA_CODI = #{codeContract}
+			</if>	
+	</select>
+    
+</mapper>

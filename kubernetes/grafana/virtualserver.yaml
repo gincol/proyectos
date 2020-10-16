@@ -1,0 +1,15 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  host: grafana.debian.local
+  upstreams:
+  - name: grafana
+    service: grafana-service
+    port: 80
+  routes:
+  - path: /
+    action:
+      pass: grafana

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.inventari.integration.orm.dao.LogicalModelDao">
+	
+	<insert id="insert" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.LogicalModel">
+		INSERT INTO TB_MCL (
+			MCL_ID,
+			CODE,
+			CODE_CONTRACT,
+			REASON_CHANGE,
+			DATE_START,
+			DATE_INSERT,
+			USER_INSERT
+		) VALUES (
+			SEQ_MCL.NEXTVAL,
+			#{code},
+			#{codeContract},
+			#{reasonChange},
+			SYSTIMESTAMP,
+			SYSTIMESTAMP,
+			<choose>
+				<when test="userUpdate != null">
+					#{userUpdate}
+				</when>
+				<otherwise>
+					#{userInsert}
+				</otherwise>
+			</choose>
+		)			
+	</insert> 
+	
+	<update id="update" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.LogicalModel">
+		UPDATE
+			TB_MCL
+		SET
+			DATE_END = SYSTIMESTAMP,
+			DATE_UPDATE = SYSTIMESTAMP,
+			USER_UPDATE = #{userUpdate}
+		WHERE
+			CODE_CONTRACT = #{codeContract}
+			AND CODE = #{code} 	
+			AND DATE_END IS NULL		
+	</update> 
+	
+	<update id="delete" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.LogicalModel">
+		UPDATE
+			TB_MCL
+		SET
+			DATE_END = SYSTIMESTAMP,
+			DATE_DELETE = SYSTIMESTAMP,
+			USER_DELETE = #{userDelete}
+		WHERE
+			CODE_CONTRACT = #{codeContract}
+			AND CODE = #{code} 	
+			AND DATE_END IS NULL		
+	</update>	 
+	
+	<select id="select" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.LogicalModel">
+		SELECT
+			CODE,
+			CODE_CONTRACT,
+			REASON_CHANGE,
+			DATE_START,
+			DATE_END,
+			DATE_INSERT,
+			USER_INSERT,
+			DATE_UPDATE,
+			USER_UPDATE,
+			DATE_DELETE,
+			USER_DELETE
+		FROM
+			TB_MCL
+		WHERE
+			CODE = #{code}
+			AND DATE_END IS NULL	
+    </select>
+	
+	<select id="selectLogicalModel" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.LogicalModel">
+		SELECT
+			CODE,
+			CODE_CONTRACT,
+			REASON_CHANGE,
+			DATE_START,
+			DATE_END,
+			DATE_INSERT,
+			USER_INSERT,
+			DATE_UPDATE,
+			USER_UPDATE,
+			DATE_DELETE,
+			USER_DELETE
+		FROM
+			TB_MCL
+		WHERE
+			CODE_CONTRACT = #{codeContract}
+			AND CODE = #{code}
+			<if test="dateReference == null">
+				AND	DATE_START <![CDATA[<=]]> SYSDATE AND (DATE_END IS NULL OR DATE_END <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATE_START <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATE_END IS NULL OR DATE_END <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+    </select>	
+
+</mapper>

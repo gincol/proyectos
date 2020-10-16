@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: owasp-storage-pv-claim
+  namespace: arq
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+  labels:
+    k8s-app: owasp-app
+    app: owasp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi

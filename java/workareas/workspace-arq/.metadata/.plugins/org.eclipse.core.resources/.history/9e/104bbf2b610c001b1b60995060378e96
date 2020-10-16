@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ci-app
+  namespace: default
+  labels:
+    k8s-app: ci-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: ci-app
+    spec:
+      containers:
+      - name: ci-app
+        image: k8s-master.registry.local:5000/ci-app
+        imagePullPolicy: "Always"
+        envFrom:
+          - configMapRef:
+              name: owasp-cm-app
+          - secretRef:
+              name: env-secrets
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          periodSeconds: 10
+          initialDelaySeconds: 30
+          timeoutSeconds: 5  
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          periodSeconds: 10
+          initialDelaySeconds: 40
+          timeoutSeconds: 5
+            
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ci-app
+  namespace: default
+  labels:
+    k8s-app: ci-app
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    k8s-app: ci-app

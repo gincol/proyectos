@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.inventari.integration.orm.dao.gap.CommerceGapDao">
+   
+    <select id="selectCommerce" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.CommerceDetailedGap">
+		SELECT
+			CONTRACTA_CODI as codeContract,
+			CODI as code,
+			CIF as cif,
+			RAO_SOCIAL as socialReason,
+			ESTAT_CODI as status,
+			TIPUS_VIA_CODI as codeTypeRoad,
+			CARRER as streetName,
+			CODI_CARRER as streetCode,
+		    NUMERO_INICI as startNumber,
+		    NUMERO_FI as endNumber,
+		    LLETRA_INICI as startLetter,
+		    LLETRA_FI as endLetter,
+			DATA_ALTA as dateAdded,
+			DATA_BAIXA as dateUnsubscribed,
+			GRAN_PRODUCTOR as greatProductor,
+			EXPEDIENT as expedient,
+			ZONA_COMERCIAL as belongCommercialArea,
+			COORDINADA_X as coordinateX,
+			COORDINADA_Y as coordinateY,
+			POBLACIO as city
+		FROM
+			VW_COMERC
+		WHERE
+			CONTRACTA_CODI = #{codeContract}
+			<if test="code != null">				
+		    	AND CODI = #{code}	
+			</if>
+			<if test="dateReference == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+    </select>
+    
+    <select id="selectCommerceMassive" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.CommerceGap">
+		SELECT
+		    CONTRACTA_CODI as codeContract,
+		    CODI as code,
+		    DATA_INICI as dateStart,
+		    DATA_FI as dateEnd
+		FROM 
+		    VW_MASSIVA_COMERC
+		WHERE
+			CONTRACTA_CODI = #{codeContract}
+			<if test="dateReference == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+    </select>
+    
+    <select id="selectElementsByCommerce" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.CommerceElementGap">
+	    SELECT
+			CONTRACTA_CODI as codeContract,
+			CODI as code,
+			MCF_CODI as codeMCF,
+			DATA_INICI as dateStart,
+			DATA_FI as dateEnd,
+			RAO_CANVI as reasonChange
+		FROM
+			VW_COMERC_ELEMENTS
+		WHERE
+			CONTRACTA_CODI = #{codeContract}
+			AND CODI = #{code}
+			<if test="dateReference == null">
+				AND	DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATA_INICI <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATA_FI IS NULL OR DATA_FI <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+    </select>
+    
+</mapper>
+	
+	

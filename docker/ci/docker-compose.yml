@@ -1,0 +1,77 @@
+version: '3.5'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - jenkins-home:/var/jenkins_home
+
+  gitlab:
+    image: 'gitlab/gitlab-ee:nightly'
+    container_name: gitlab
+    hostname: 'gitlab.debian.local'
+    restart: always
+    hostname: 'gitlab.debian.local'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.debian.local'
+        gitlab_rails['lfs_enabled'] = true
+        gitlab_rails['gitlab_shell_ssh_port'] = 2224
+    ports:
+      - "80:80"
+      - "2224:22"
+    volumes:
+      - ${PWD}/gitlab/config:/etc/gitlab
+      - ${PWD}/gitlab/data:/var/opt/gitlab
+
+  sonar:
+    image: sonarqube:8.5.0-community
+    container_name: sonar
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://sonar-db:5432/sonar
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+    volumes:
+      - sonar-conf:/opt/sonarquebe/conf
+      - sonar-data:/opt/sonarquebe/data
+      - sonar-extensions:/opt/sonarqube/extensions
+    depends_on:
+      - sonar-db
+
+  sonar-db:
+    image: postgres
+    container_name: sonar-db
+    restart: always
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - sonar-postgresql:/var/lib/postgresql
+      - sonar-postgresql-data:/var/lib/postgresql/data
+
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    restart: always
+    ports:
+      - "8081:8081"
+    volumes:
+      - nexus-data:/nexus-data
+
+volumes:
+  gitlab-config:
+  gitlab-data:
+  jenkins-home:
+  sonar-conf:
+  sonar-data:
+  sonar-extensions:
+  sonar-postgresql:
+  sonar-postgresql-data:
+  nexus-data:

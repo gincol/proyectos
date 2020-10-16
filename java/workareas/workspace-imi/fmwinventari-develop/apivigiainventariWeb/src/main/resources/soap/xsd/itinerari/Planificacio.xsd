@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	elementFormDefault="qualified"
+	xmlns:planificacio="http://webservices.neru.net.bcn.es/itinerari/planificacio/to"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservices.neru.net.bcn.es/itinerari/planificacio/to">
+	<xs:complexType name="PlanificacioTO">
+		<xs:sequence>
+			<xs:element name="any" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="codiItinerari" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="dataFi" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataInici" type="xs:string" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CalendariTO">
+		<xs:sequence>
+			<xs:element name="dataFi" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataInici" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="preu" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+			<xs:element name="versio" type="xs:long" minOccurs="0" maxOccurs="1" />
+			<xs:element name="datesExec" type="planificacio:DatesExecTO" minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatesExecTO">
+		<xs:sequence>
+			<xs:element name="codiTipusDia" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataExecucio" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="preu" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

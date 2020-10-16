@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	elementFormDefault="qualified"
+	xmlns:ubicacio="http://webservices.neru.net.bcn.es/inventari/ubicacio/to"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic/to">
+	<xs:complexType name="MobiliariLogicTO">
+		<xs:sequence>
+			<xs:element name="codi" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="codiEstatMCL" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="codiTipusFraccio" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="codiTipusMCL" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="coordinadaX" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+			<xs:element name="coordinadaY" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataFi" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataInici" type="xs:string" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FisicLogicTO">
+		<xs:sequence>
+			<xs:element name="codiMobiliariFisic" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="dataFi" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataInici" type="xs:string" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LogicUbicacioTO">
+		<xs:sequence>
+			<xs:element name="codiUbicacio" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="dataFi" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dataInici" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="posicio" type="xs:long" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,5 @@
+package cat.vn.owasp.repository;
+
+public class UserRepository {
+
+}

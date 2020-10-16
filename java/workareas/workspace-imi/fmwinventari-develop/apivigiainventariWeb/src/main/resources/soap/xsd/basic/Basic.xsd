@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:basic="http://webservices.neru.net.bcn.es/basic/to" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	targetNamespace="http://webservices.neru.net.bcn.es/basic/to">
+	<xs:complexType name="BasicRequestTO">
+		<xs:sequence />
+	</xs:complexType>
+	<xs:complexType name="BasicResponseTO">
+		<xs:sequence/>
+	</xs:complexType>
+
+	<xs:complexType name="BasicResultTO">
+		<xs:sequence>
+			<xs:element name="result" type="basic:ResultTO" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResultTO">
+		<xs:sequence>
+			<xs:element name="resultCode" type="xs:string" minOccurs="1" />
+			<xs:element name="resultMessage" type="xs:string" minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

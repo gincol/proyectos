@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:mobiliariLogic="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic/to"
+	xmlns:tns="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic" xmlns:p="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://webservices.neru.net.bcn.es/inventari/mobiliarilogic/to" schemaLocation="../../xsd/mobiliarilogic-schema.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="CreateMobiliariLogicInput">
+		<wsdl:part name="CreateMobiliariLogicRequest" element="mobiliariLogic:createMobiliariLogicRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="CreateMobiliariLogicOutput">
+		<wsdl:part name="CreateMobiliariLogicResponse" element="mobiliariLogic:createMobiliariLogicResponse"></wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="ReadMobiliariLogicInput">
+		<wsdl:part name="ReadMobiliariLogicRequest" element="mobiliariLogic:readMobiliariLogicRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ReadMobiliariLogicOutput">
+		<wsdl:part name="ReadMobiliariLogicResponse" element="mobiliariLogic:readMobiliariLogicResponse"></wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="UpdateMobiliariLogicInput">
+		<wsdl:part name="UpdateMobiliariLogicRequest" element="mobiliariLogic:updateMobiliariLogicRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="UpdateMobiliariLogicOutput">
+		<wsdl:part name="UpdateMobiliariLogicResponse" element="mobiliariLogic:updateMobiliariLogicResponse"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="DeleteMobiliariLogicInput">
+		<wsdl:part name="DeleteMobiliariLogicRequest" element="mobiliariLogic:deleteMobiliariLogicRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="DeleteMobiliariLogicOutput">
+		<wsdl:part name="DeleteMobiliariLogicResponse" element="mobiliariLogic:deleteMobiliariLogicResponse"></wsdl:part>
+	</wsdl:message>
+
+	<wsdl:portType name="MobiliariLogicResource">
+		<wsdl:operation name="CreateMobiliariLogic">
+			<wsdl:input message="tns:CreateMobiliariLogicInput" />
+			<wsdl:output message="tns:CreateMobiliariLogicOutput" />
+		</wsdl:operation>		<wsdl:operation name="ReadMobiliariLogic">
+			<wsdl:input message="tns:ReadMobiliariLogicInput" />
+			<wsdl:output message="tns:ReadMobiliariLogicOutput" />
+		</wsdl:operation>
+		<wsdl:operation name="UpdateMobiliariLogic">
+			<wsdl:input message="tns:UpdateMobiliariLogicInput" />
+			<wsdl:output message="tns:UpdateMobiliariLogicOutput" />
+		</wsdl:operation>
+		<wsdl:operation name="DeleteMobiliariLogic">
+			<wsdl:input message="tns:DeleteMobiliariLogicInput" />
+			<wsdl:output message="tns:DeleteMobiliariLogicOutput" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="MobiliariLogicResourceSoapBinding" type="tns:MobiliariLogicResource">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="CreateMobiliariLogic">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ReadMobiliariLogic">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateMobiliariLogic">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteMobiliariLogic">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="MobiliariLogicResourceService">
+		<wsdl:documentation>Mobiliari Logic service</wsdl:documentation>
+		<wsdl:port name="MobiliariLogicResourceSoapPort" binding="tns:MobiliariLogicResourceSoapBinding">
+			<soap:address location="/mobiliariLogicService/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

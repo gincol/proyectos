@@ -1,0 +1,74 @@
+package cat.bcn.vn.config;
+
+import java.sql.SQLException;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
+import org.springframework.jmx.support.RegistrationPolicy;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import oracle.jdbc.pool.OracleDataSource;
+
+@Configuration
+public class JdbcConfig {
+
+//	@Value("${spring.datasource.jndi-name}")
+//	private String jndiName;
+	
+	@Value("${spring.datasource.username}")
+	private String username;
+	
+	@Value("${spring.datasource.password}")
+	private String password;
+	
+	@Value("${spring.datasource.url}")
+	private String url;
+	
+//	@Bean(name = "dataSource")
+//    DataSource dataSource() throws SQLException {
+//        OracleDataSource dataSource = new OracleDataSource();
+//        dataSource.setUser(username);
+//        dataSource.setPassword(password);
+//        dataSource.setURL(url);
+//        dataSource.setImplicitCachingEnabled(true);
+//        dataSource.setFastConnectionFailoverEnabled(true);
+//        return dataSource;
+//	}
+
+//	@Bean(name = "dataSource")
+//	public DataSource dataSource() {
+//		JndiDataSourceLookup dataSourceLookup = new JndiDataSourceLookup();
+//		DataSource dataSource = dataSourceLookup.getDataSource(jndiName);
+//		return dataSource;
+//	}
+
+	@Bean(name = "entityManagerFactory")
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
+			@Qualifier("dataSource") DataSource dataSource) {
+		return builder.dataSource(dataSource).packages("cat.bcn.vn.model").persistenceUnit("sarcat").build();
+	}
+
+	@Bean(name = "transactionManager")
+	public PlatformTransactionManager transactionManager(
+			@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
+		return new JpaTransactionManager(entityManagerFactory);
+	}
+
+	@Bean
+	public AnnotationMBeanExporter annotationMBeanExporter() {
+		AnnotationMBeanExporter annotationMBeanExporter = new AnnotationMBeanExporter();
+		annotationMBeanExporter.setRegistrationPolicy(RegistrationPolicy.IGNORE_EXISTING);
+		annotationMBeanExporter.addExcludedBean("dataSource");
+		return annotationMBeanExporter;
+	}
+
+}

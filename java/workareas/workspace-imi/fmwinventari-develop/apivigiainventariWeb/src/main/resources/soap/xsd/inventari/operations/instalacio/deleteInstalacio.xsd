@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:basic="http://webservices.neru.net.bcn.es/basic/to"
+	xmlns:instalacio="http://webservices.neru.net.bcn.es/inventari/instalacio/to"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservices.neru.net.bcn.es/inventari/instalacio/to">
+	<xs:import namespace="http://webservices.neru.net.bcn.es/basic/to" schemaLocation="../../../basic/Basic.xsd" />
+	<xs:element name="deleteInstalacioRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicRequestTO">
+					<xs:sequence>
+						<xs:element name="deleteInstalacioParameters" type="instalacio:DeleteInstalacioParametersTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="deleteInstalacioResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="basic:BasicResponseTO">
+					<xs:sequence>
+						<xs:element name="deleteInstalacioResults" type="instalacio:DeleteInstalacioResultsTO" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="DeleteInstalacioParametersTO">
+		<xs:sequence>
+			<xs:element name="codi" type="xs:string" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeleteInstalacioResultsTO">
+		<xs:complexContent>
+			<xs:extension base="basic:BasicResultTO" />
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

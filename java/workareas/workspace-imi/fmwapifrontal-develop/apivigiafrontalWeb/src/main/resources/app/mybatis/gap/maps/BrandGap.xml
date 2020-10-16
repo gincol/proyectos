@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.gap.inventary.orm.dao.BrandModelGapDao">
+
+   
+    <select id="getModelsBrandGap" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.BrandModelGap">
+        SELECT 
+	        CODI AS code, 
+			DESCRIPCIO AS description,
+			MODEL_CODI AS modelCode, 
+			MODEL_DESCRIPCIO AS modelDescription
+		FROM 
+			VW_DM_MARCA_RRMM
+		WHERE 
+			CODI = #{codeBrand}
+		AND 
+			DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI  <![CDATA[>=]]> SYSDATE OR DATA_FI IS NULL)			
+    </select>
+    
+</mapper>

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: owasp-config-app
+  namespace: arq
+data:
+  spring.profiles.active: des

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.gap.inventary.orm.dao.UbicationGapDao">
+   
+    <select id="getUbicationsGap" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.UbicationGap">
+        SELECT 
+	      	CODI AS code, 
+	      	COORDINADA_X AS coordinateX,
+	      	COORDINADA_Y AS coordinateY,
+	      	CARRER AS streetName,
+	      	CODI_TIPUS_UBICACIO AS ubicationTypeCode,
+			DESCRIPCIO_TIPUS_UBICACIO AS ubicationTypeDescription 
+		FROM 
+			VW_UBICACIO
+		WHERE 
+			CODI = #{code}
+		AND 
+			DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI  <![CDATA[>=]]> SYSDATE OR DATA_FI IS NULL)		
+		<if test="checkStatusDelete != null">
+			AND CODI_ESTAT !='B'
+		</if>	
+    </select>
+    
+    <select id="getUbicationsGapByCodeType" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.UbicationGap">
+        SELECT 
+	      	CODI AS code, 
+	      	COORDINADA_X AS coordinateX,
+	      	COORDINADA_Y AS coordinateY,
+	      	CARRER AS streetName,
+	      	CODI_TIPUS_UBICACIO AS ubicationTypeCode,
+			DESCRIPCIO_TIPUS_UBICACIO AS ubicationTypeDescription 
+		FROM 
+			VW_UBICACIO
+		WHERE 
+			CODI = #{code}
+		AND
+			CODI_TIPUS_UBICACIO = #{type}
+				
+		AND 
+			DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI  <![CDATA[>=]]> SYSDATE OR DATA_FI IS NULL)
+		AND 
+			CODI_ESTAT !='B'						
+    </select>
+</mapper>

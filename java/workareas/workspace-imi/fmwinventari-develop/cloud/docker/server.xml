@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
+  <Listener SSLEngine="on" className="org.apache.catalina.core.AprLifecycleListener"/>
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+
+  <GlobalNamingResources>
+    <Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
+
+    <!-- VARIABLES JNDI EQUIVALENTES A LAS EXISTENTES EN LOS ENTORNOS IBM WAS DEL IMI -->
+    <Environment name="ENTORN" override="false" type="java.lang.String" value="DOCKER"/>
+    <Environment name="SUBENTORN" override="false" type="java.lang.String" value="TOMCAT"/>
+    <Environment name="servername" override="false" type="java.lang.String" value="LOCAL"/>
+    <Environment name="PATH_FITXERS" override="false" type="java.lang.String" value="${catalina.home}"/>
+    <Environment name="PORT_HTTP_8080" override="false" type="java.lang.String" value="8080"/>
+    <Environment name="PORT_HTTPS_8080" override="false" type="java.lang.String" value="443"/>
+    <Environment name="PORT_HTTP_443" override="false" type="java.lang.String" value="8080"/>
+    <Environment name="PORT_HTTPS_443" override="false" type="java.lang.String" value="443"/>
+    <Environment name="BFILE_USER" override="false" type="java.lang.String" value="imiftp"/>
+    <Environment name="BFILE_PASS" override="false" type="java.lang.String" value="imiftp1"/>
+    <!-- FIN DE VARIABLES JNDI EQUIVALENTES A LAS EXISTENTES EN LOS ENTORNOS IBM WAS DEL IMI -->
+
+  </GlobalNamingResources>
+
+  <Service name="Catalina">
+
+    <Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="443"/>
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443"/>
+    <Engine defaultHost="localhost" name="Catalina">
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+      </Realm>
+
+      <Host appBase="webapps" autoDeploy="true" name="localhost" unpackWARs="true">
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
+
+      <Context docBase="vigia" path="/services/vigia" reloadable="true" />
+
+	  </Host>
+    </Engine>
+  </Service>
+</Server>

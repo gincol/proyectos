@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres:13-alpine
+    containr_name: db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - MYSQL_ROOT_PASSWORD=postgres
+      - MYSQL_USER=postgres
+      - MYSQL_PASSWORD=postgres
+      - MYSQL_DATABASE=owasp

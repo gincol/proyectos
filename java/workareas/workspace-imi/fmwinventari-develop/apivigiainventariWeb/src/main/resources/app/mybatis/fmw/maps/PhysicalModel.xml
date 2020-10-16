@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.inventari.integration.orm.dao.PhysicalModelDao">
+	
+	<insert id="insert" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.PhysicalModel">
+		INSERT INTO TB_MCF (
+			MCF_ID,
+			CODE,			
+			CODE_CONTRACT,
+			REASON_CHANGE,
+			DATE_START,
+			DATE_INSERT,
+			USER_INSERT
+		) VALUES (
+			SEQ_MCF.NEXTVAL,
+			#{code},
+			#{codeContract},
+			#{reasonChange},
+			SYSTIMESTAMP,
+			SYSTIMESTAMP,
+			<choose>
+				<when test="userUpdate != null">
+					#{userUpdate}
+				</when>
+				<otherwise>
+					#{userInsert}
+				</otherwise>
+			</choose>
+		)			
+	</insert>
+	
+	<insert id="insertSensors" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.PhysicalModel">		
+		INSERT INTO TB_SENSOR_MCF
+		SELECT 
+		(SELECT MCF_ID FROM TB_MCF WHERE CODE_CONTRACT = #{codeContract} AND CODE = #{code} AND DATE_END IS NULL) as MCF_ID,
+		SENSOR_ID
+		FROM TB_SENSOR
+		WHERE
+		CODI_CONTRACTA = #{codeContract}
+		AND CODI IN
+		<foreach collection="sensors" item="sensor" open="(" separator="," close=")">
+			#{sensor.code}
+		</foreach>
+		AND DATA_FI IS NULL
+	</insert>   
+	
+	<update id="update" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.PhysicalModel">
+		UPDATE
+			TB_MCF
+		SET
+			DATE_END = SYSTIMESTAMP,
+			DATE_UPDATE = SYSTIMESTAMP,
+			USER_UPDATE = #{userUpdate}
+		WHERE
+			CODE_CONTRACT = #{codeContract}
+			AND CODE = #{code} 	
+			AND DATE_END IS NULL	
+	</update>     
+	
+	<update id="delete" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.PhysicalModel">
+		UPDATE
+			TB_MCF
+		SET
+			DATE_END = SYSTIMESTAMP,
+			DATE_DELETE = SYSTIMESTAMP,
+			USER_DELETE = #{userDelete}
+		WHERE
+			CODE_CONTRACT = #{codeContract}
+			AND CODE = #{code} 
+			AND DATE_END IS NULL		
+	</update> 
+	
+	<select id="select" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.PhysicalModel">
+		SELECT
+			CODE,
+			REASON_CHANGE,
+			DATE_INSERT,
+			USER_INSERT,
+			DATE_UPDATE,
+			USER_UPDATE,
+			DATE_DELETE,
+			USER_DELETE
+		FROM
+			TB_MCF
+		WHERE
+			CODE = #{code}
+			AND DATE_END IS NULL
+    </select>
+	
+	<select id="selectPhysicalModel"  parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.PhysicalModel">
+		SELECT
+			CODE,
+			CODE_CONTRACT,
+			REASON_CHANGE,
+			DATE_INSERT,
+			USER_INSERT,
+			DATE_UPDATE,
+			USER_UPDATE,
+			DATE_DELETE,
+			USER_DELETE
+		FROM
+			TB_MCF
+		WHERE
+			CODE_CONTRACT = #{codeContract}
+			AND CODE = #{code}			
+			<if test="dateReference == null">
+				AND	DATE_START <![CDATA[<=]]> SYSDATE AND (DATE_END IS NULL OR DATE_END <![CDATA[>=]]> SYSDATE)
+			</if>			
+			<if test="dateReference != null">
+				AND DATE_START <![CDATA[<=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS') AND (DATE_END IS NULL OR DATE_END <![CDATA[>=]]> TO_TIMESTAMP(#{dateReference}, 'DD-MM-YYYY HH24:MI:SS'))
+			</if>
+    </select>
+
+</mapper>

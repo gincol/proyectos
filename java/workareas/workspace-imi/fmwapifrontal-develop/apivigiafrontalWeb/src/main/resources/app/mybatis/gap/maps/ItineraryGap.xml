@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.gap.itinerary.orm.dao.ItineraryGapDao">
+   
+    <select id="getItinerariesGap" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.gap.ItineraryGap">
+        SELECT 
+			CONTRACTA_CODI AS codeContract,
+			SUBCONTRATA_CODI AS codeSubContract,
+			CODI AS code,
+			VERSIO AS version,	
+			DATA_INICI AS dateStart,
+			DATA_FI AS dateEnd
+		FROM 
+			VW_ITINERARI
+		WHERE 
+			CODI = #{code}
+		AND
+			DATA_INICI <![CDATA[<=]]> SYSDATE AND (DATA_FI  <![CDATA[>=]]> SYSDATE OR DATA_FI IS NULL)
+	</select>
+    
+</mapper>
+	
+	
+
+	

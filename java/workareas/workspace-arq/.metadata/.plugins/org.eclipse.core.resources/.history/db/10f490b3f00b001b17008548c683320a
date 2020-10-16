@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: '@project.artifactId@'
+    version: '@project.version@' 
+
+management:
+  metrics:
+    tags:
+      application: '@project.artifactId@'
+  endpoints:
+    web:
+      exposure:
+        include: 'health,prometheus'
+        exclude: env

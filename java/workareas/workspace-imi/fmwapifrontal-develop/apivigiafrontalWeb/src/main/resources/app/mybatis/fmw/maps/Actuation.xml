@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.inventary.orm.dao.ActuationDao">
+    
+    <select id="getActuations" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.Actuation">
+        SELECT
+		    CODI_CONTRACTA AS codeContract,
+			CODI_ACTUACIO AS code,
+			DATA_ACTUACIO AS dateActuation,
+			TIPUS_ELEMENT AS codeTypeEntity,
+			CODI_ELEMENT AS codeEntity,
+			TIPUS_ACTUACIO AS typeActuation,
+			OBSERVACIONS AS observations,
+			CODI_ACTUACIO AS codeActuation,
+			USER_INSERT AS userInsert,
+			USER_DELETE AS userDelete
+        FROM 
+            TB_ACTUACIO_ELEMENT
+        WHERE
+            DATA_INICI  <![CDATA[ <= ]]> SYSDATE
+        <if test="checkStatusDelete != null">
+			AND (DATA_FI  <![CDATA[ >= ]]> SYSDATE OR DATA_FI IS NULL)
+		</if>     
+        <if test="codeContract != null">
+        	AND
+        		CODI_CONTRACTA = #{codeContract}
+        </if>
+        <if test="code != null">	     
+			AND
+            	CODI_ACTUACIO = #{code}
+        </if>
+        <if test="codeEntity != null">	     
+			AND
+            	CODI_ELEMENT = #{codeEntity}
+        </if>   
+           
+    </select>
+
+    
+    </mapper>

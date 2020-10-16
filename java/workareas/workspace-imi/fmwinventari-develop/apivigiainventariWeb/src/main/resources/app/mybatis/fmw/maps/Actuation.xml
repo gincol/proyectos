@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.inventari.integration.orm.dao.ActuationDao">
+    
+	<insert id="insert" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.Actuation">
+		INSERT INTO TB_ACTUACIO (
+			CODI_CONTRACTA,
+			CODI_ACTUACIO,
+			DATA_INICI,
+			DATE_INSERT,	
+			USER_INSERT
+		) VALUES (
+			#{codeContract},
+			#{code},
+			SYSTIMESTAMP,
+			SYSTIMESTAMP,
+			#{userInsert}
+		)			
+	</insert>
+	
+	<update id="delete" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.Actuation">
+		UPDATE	
+			TB_ACTUACIO
+		SET
+			DATA_ANULLACIO = TO_TIMESTAMP(#{dateAnnulment}, 'dd/MM/yyyy HH24:MI:SS'),
+			MOTIU_ANULLACIO = #{annulmentReason},
+			USER_DELETE = #{userDelete}
+		WHERE
+			CODI_CONTRACTA = #{codeContract}
+			AND CODI_ACTUACIO = #{code}
+	</update>
+	
+	<insert id="insertActuationElement" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.Actuation">
+		INSERT INTO TB_ACTUACIO_ELEMENT (
+			CODI_CONTRACTA,
+			CODI_ACTUACIO,
+			DATA_ACTUACIO,
+			TIPUS_ELEMENT,
+			CODI_ELEMENT,
+			TIPUS_ACTUACIO,
+			OBSERVACIONS,
+			DATA_INICI,
+			DATE_INSERT,	
+			USER_INSERT
+		) VALUES (
+			#{codeContract},
+			#{code},
+			TO_TIMESTAMP(#{dateActuation}, 'dd/MM/yyyy HH24:MI:SS'),
+			#{codeTypeEntity},
+			#{codeEntity},
+			#{typeActuation},
+			#{observations},
+			SYSTIMESTAMP,
+			SYSTIMESTAMP,
+			#{userInsert}
+		)
+	</insert> 
+	
+    <update id="deleteActuationElement" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.Actuation">
+		UPDATE	
+			TB_ACTUACIO_ELEMENT
+		SET
+			DATA_FI = SYSTIMESTAMP,
+			DATE_DELETE = SYSTIMESTAMP,
+			USER_DELETE = #{userDelete}  
+		WHERE
+			CODI_CONTRACTA = #{codeContract}
+			AND CODI_ACTUACIO = #{code}
+			AND DATA_FI IS NULL
+	</update> 	    
+	
+	<select id="selectActuation" parameterType="java.util.Map" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.Actuation">
+		SELECT
+			A.CODI_CONTRACTA as codeContract,	
+			E.TIPUS_ELEMENT as codeTypeEntity,		
+			E.CODI_ELEMENT as codeEntity,
+			A.CODI_ACTUACIO as code,
+			E.TIPUS_ACTUACIO as typeActuation,
+			E.DATA_ACTUACIO as dateActuation,
+			E.OBSERVACIONS as observations,
+			A.DATA_ANULLACIO AS dateAnnulment,
+			A.MOTIU_ANULLACIO as annulmentReason
+		FROM
+			TB_ACTUACIO A
+		JOIN
+			TB_ACTUACIO_ELEMENT E ON(E.CODI_CONTRACTA = A.CODI_CONTRACTA AND E.CODI_ACTUACIO = A.CODI_ACTUACIO)
+		WHERE
+			A.CODI_CONTRACTA = #{codeContract}
+			AND E.CODI_ELEMENT = #{codeEntity}
+			AND E.TIPUS_ELEMENT = #{codeTypeEntity}
+			<if test="considerAnnulments == null">
+				AND A.DATA_ANULLACIO IS NULL
+			</if>			
+	</select>
+</mapper>

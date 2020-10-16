@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: owasp-app-service
+  namespace: arq
+  labels:
+    k8s-app: owasp-app
+    app: owasp-app
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    k8s-app: owasp-app
+    app: owasp-app

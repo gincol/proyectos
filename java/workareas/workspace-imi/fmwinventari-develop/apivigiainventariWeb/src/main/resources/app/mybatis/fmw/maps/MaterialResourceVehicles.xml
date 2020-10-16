@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.inventari.integration.orm.dao.MaterialResourceVehiclesDao">
+	
+	<insert id="insert" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.MaterialResourceVehicles">
+		INSERT INTO TB_RRMM_VEHICLE (
+			RRMM_VEHICLE_ID,
+			CODE,
+			CODE_CONTRACT,
+			EURO_STANDARD,
+			LOADING_TECHNOLOGY,
+			TYPE_EMISSIONS,
+			DATE_START,
+			DATE_INSERT,
+			USER_INSERT
+		) VALUES (
+			(SELECT RRMM_ID FROM TB_RRMM WHERE CODE_CONTRACT = #{codeContract} AND CODE = #{code} AND DATE_END IS NULL),
+			#{code},
+			#{codeContract},
+			#{euroStandard},
+			#{loadingTechnology},
+			#{typeEmissions},
+			SYSTIMESTAMP,
+			SYSTIMESTAMP,
+			<choose>
+				<when test="userUpdate != null">
+					#{userUpdate}
+				</when>
+				<otherwise>
+					#{userInsert}
+				</otherwise>
+			</choose>
+		)
+	</insert>
+	
+	<update id="update" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.MaterialResourceVehicles">
+		UPDATE
+			TB_RRMM_VEHICLE
+		SET
+			DATE_END = SYSTIMESTAMP,
+			DATE_UPDATE = SYSTIMESTAMP,
+			USER_UPDATE = #{userUpdate}
+		WHERE
+			CODE_CONTRACT = #{codeContract}
+			AND CODE = #{code} 	
+			AND DATE_END IS NULL
+	</update>
+	
+	<update id="delete" parameterType="es.bcn.vigia.fmw.libcommons.integration.orm.model.MaterialResourceVehicles">
+		UPDATE
+			TB_RRMM_VEHICLE
+		SET
+			DATE_END = SYSTIMESTAMP,
+			DATE_DELETE = SYSTIMESTAMP,
+			USER_DELETE = #{userDelete}
+		WHERE
+			CODE_CONTRACT = #{codeContract}
+			AND CODE = #{code} 	
+			AND DATE_END IS NULL
+	</update>
+	
+	<select id="select" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.MaterialResourceVehicles">
+		SELECT
+			CODE,
+			CODE_CONTRACT,
+			EURO_STANDARD,
+			TYPE_EMISSIONS,
+			LOADING_TECHNOLOGY,
+			DATE_INSERT,
+			USER_INSERT,
+			DATE_UPDATE,
+			USER_UPDATE,
+			DATE_DELETE,
+			USER_DELETE
+		FROM
+			TB_RRMM_VEHICLE
+		WHERE
+			CODE = #{code}
+			AND DATE_END IS NULL
+    </select>
+
+</mapper>

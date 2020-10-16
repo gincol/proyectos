@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.bcn.imi.framework.vigia.frontal.execution.orm.dao.TimeClockSummaryDao">
+   
+    <select id="getTimeClockSummaries" resultType="es.bcn.vigia.fmw.libcommons.integration.orm.model.TimeClockSummary">
+        SELECT 
+        	CODI_CONTRACTA AS codeContract,
+			CODI_INSTALACIO AS codeInstallation,
+			OBSERVACIO AS observation,
+			USUARI_INSERCIO as userInsert
+        FROM 
+        	TB_FITXATGE_RESUM
+		WHERE 
+			CODI_CONTRACTA = UPPER(#{codeContract})
+		 <if test="codeInstallation != null">
+			AND	CODI_INSTALACIO = UPPER(#{codeInstallation})
+		</if>	
+		<if test="codeInstallation == null">
+			AND	CODI_INSTALACIO IS NULL
+		</if>	
+		
+		AND
+		 	DATA_FITXATGE = TO_DATE(#{date},'DD/MM/YYYY')		
+    </select>
+    
+   
+</mapper>
+
+	

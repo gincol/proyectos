@@ -1,0 +1,23 @@
+log4j.properties.location=log4j-DOCKER.xml
+
+spring.kafka.producer.bootstrap-servers=192.168.99.105:9092
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+app.monitor.message = LOCAL
+
+
+#----------------------------------------------------------------------------------------
+#-----------------------------URL NodeJS ---------------------------------------------
+#----------------------------------------------------------------------------------------
+
+url.api.nodeJS = http://localhost:3000/services/vigia/fmwnodejs
+
+
+#----------------------------------------------------------------------------------------
+#--------------------------------- Kafka ---------------------------------------------
+#----------------------------------------------------------------------------------------
+
+kafka.server								= localhost:9092
+kafka.groups.input							= group_kafkaElement
+kafka.groups.output							= group_kafkaElementResult

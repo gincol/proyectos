@@ -1,0 +1,5 @@
+log4j.properties.location=log4j-BLUEMIX.xml
+
+spring.kafka.producer.bootstrap-servers=imifmwvigia.eu-de.containers.appdomain.cloud:31300
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer

@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+/Users/ginescolladonavarro/proyectos/java/workareas/workspace-arq/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+2502482229.index
+21855098.index
+3798976798.index
+1994504758.index
+1708322683.index
+483582332.index

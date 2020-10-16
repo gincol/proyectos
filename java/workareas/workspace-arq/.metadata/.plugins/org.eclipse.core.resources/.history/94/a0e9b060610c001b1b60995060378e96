@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: owasp-app-service
+  namespace: arq
+  labels:
+    app: owasp-app
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: ci-app
