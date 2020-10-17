@@ -5,4 +5,5 @@
     <fullyQualifiedTypeName name="com.google.common.base.Predicate"/>
     <fullyQualifiedTypeName name="cat.vn.owasp.model.User"/>
     <fullyQualifiedTypeName name="javax.sql.DataSource"/>
+    <fullyQualifiedTypeName name="java.util.Arrays"/>
 </qualifiedTypeNameHistroy>
